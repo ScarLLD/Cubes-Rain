@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +8,8 @@ public class CubePool : MonoBehaviour
     [SerializeField] private Transform _container;
 
     private Queue<Cube> _cubes;
+
+    public event Action<Cube> CubeTaken;
 
     private void Awake()
     {
@@ -19,6 +21,8 @@ public class CubePool : MonoBehaviour
         cube.gameObject.SetActive(false);
         cube.transform.parent = _container;
         _cubes.Enqueue(cube);
+
+        CubeTaken?.Invoke(cube);
     }
 
     public Cube GetCube()

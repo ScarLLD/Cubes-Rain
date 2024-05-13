@@ -6,8 +6,11 @@ public class DeathTimer : MonoBehaviour
     [SerializeField] private int _maxLifeTime;
     [SerializeField] private int _minLifeTime;
 
+    private int _lifeTime;
     private CubePool _cubePool;
     private WaitForSeconds _wait;
+
+    public int GetLifeTime => _lifeTime;
 
     public void Init(CubePool cubePool)
     {
@@ -23,9 +26,9 @@ public class DeathTimer : MonoBehaviour
     {
         bool isWork = true;
 
-        int lifeTime = Random.Range(_minLifeTime, _maxLifeTime);
+        _lifeTime = Random.Range(_minLifeTime, _maxLifeTime);
 
-        _wait = new WaitForSeconds(lifeTime);
+        _wait = new WaitForSeconds(_lifeTime);
 
         while (isWork)
         {
