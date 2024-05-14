@@ -1,43 +1,50 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(ExplosionSummoner))]
 public class Bomb : MonoBehaviour
 {
-    private int _alphaTime;
+    private ExplosionSummoner _explosionSummoner;
+    private BombPool _bombPool;
     private Renderer _renderer;
-
+    private float _alphaTime;
 
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
+        _explosionSummoner = GetComponent<ExplosionSummoner>();
     }
 
     private void OnEnable()
     {
+        _renderer.material.color = Color.black;
         StartCoroutine(Colorize());
-        Color endColor = new(_renderer.material.color.r, _renderer.material.color.g, _renderer.material.color.b, 0);
-        _renderer.material.color = Color.Lerp(_renderer.material.color, endColor, _alphaTime);
     }
 
-    public void Init(int alphaTime)
+    public void Init(BombPool bombPool)
+    {
+        _bombPool = bombPool;
+    }
+
+    public void SetAlphaTime(float alphaTime)
     {
         _alphaTime = alphaTime;
     }
 
     private IEnumerator Colorize()
     {
-        bool isWork = true;
+        float _time = 0;
 
-        while (isWork)
+        while (_renderer.material.color != Color.black.WithAlpha(0f))
         {
-            //Color endColor = new(_renderer.material.color.r, _renderer.material.color.g, _renderer.material.color.b, 0);
-
-            //_renderer.material.color = Color.Lerp(_renderer.material.color, endColor, _alphaTime);
-
-            //if (_renderer.material.color == endColor)
-            //    isWork = false;
+            _renderer.material.color = Color.Lerp(Color.black, Color.black.WithAlpha(0f), _time / _alphaTime);
+            _time += Time.deltaTime;
 
             yield return null;
         }
+
+        _explosionSummoner.SummonExplosion(transform.position);
+        _bombPool.PutBomb(this);
     }
 }

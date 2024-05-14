@@ -20,12 +20,12 @@ public class BombPool : MonoBehaviour
         _bombs.Enqueue(bomb);
     }
 
-    public Bomb GetBomb(int time)
+    public Bomb GetBomb()
     {
         if (_bombs.Count == 0)
         {
             Bomb bomb = Instantiate(_bombPrefab);
-            bomb.Init(time);
+            bomb.Init(this);
             return bomb;
         }
 

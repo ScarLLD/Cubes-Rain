@@ -19,8 +19,10 @@ public class BombsSpawner : MonoBehaviour
 
     private void Spawn(Cube cube)
     {
-        Bomb bomb = _bombPool.GetBomb(cube.Timer.GetLifeTime);
+        Bomb bomb = _bombPool.GetBomb();
+        bomb.SetAlphaTime(cube.Timer.GetLifeTime);
         bomb.transform.position = cube.transform.position;
+        bomb.transform.parent = _bombsParent;
         bomb.gameObject.SetActive(true);
     }
 }
