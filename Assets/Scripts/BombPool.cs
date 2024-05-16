@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BombPool : MonoBehaviour
+public class BombPool : Pool
 {
     [SerializeField] private Bomb _bombPrefab;
     [SerializeField] private Transform _container;
@@ -18,6 +18,8 @@ public class BombPool : MonoBehaviour
         bomb.gameObject.SetActive(false);
         bomb.transform.parent = _container;
         _bombs.Enqueue(bomb);
+
+        DecreaseSpawnedObject();
     }
 
     public Bomb GetBomb()
@@ -26,8 +28,12 @@ public class BombPool : MonoBehaviour
         {
             Bomb bomb = Instantiate(_bombPrefab);
             bomb.Init(this);
+            IncreaseSpawnedObject();
+
             return bomb;
         }
+
+        IncreaseSpawnedObject();
 
         return _bombs.Dequeue();
     }

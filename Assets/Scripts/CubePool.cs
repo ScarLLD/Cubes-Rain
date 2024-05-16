@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubePool : MonoBehaviour
+public class CubePool : Pool
 {
     [SerializeField] private Cube _cubePrefab;
     [SerializeField] private Transform _container;
 
     private Queue<Cube> _cubes;
 
-    public event Action<Cube> CubeTaken;
+    public event Action<Cube> Puted;
 
     private void Awake()
     {
@@ -22,7 +22,8 @@ public class CubePool : MonoBehaviour
         cube.transform.parent = _container;
         _cubes.Enqueue(cube);
 
-        CubeTaken?.Invoke(cube);
+        Puted?.Invoke(cube);
+        DecreaseSpawnedObject();
     }
 
     public Cube GetCube()
@@ -31,8 +32,12 @@ public class CubePool : MonoBehaviour
         {
             Cube cube = Instantiate(_cubePrefab);
             cube.Timer.Init(this);
+            IncreaseSpawnedObject();
+
             return cube;
         }
+
+        IncreaseSpawnedObject();
 
         return _cubes.Dequeue();
     }

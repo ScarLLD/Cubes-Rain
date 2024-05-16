@@ -1,20 +1,19 @@
-using System.Collections;
 using UnityEngine;
 
-public class BombsSpawner : MonoBehaviour
+public class BombsSpawner : Spawner
 {
     [SerializeField] private BombPool _bombPool;
     [SerializeField] private CubePool _cubePool;
-    [SerializeField] private Transform _bombsParent;
-
+    [SerializeField] private Transform _parent;
+        
     private void OnEnable()
     {
-        _cubePool.CubeTaken += Spawn;
+        _cubePool.Puted += Spawn;
     }
 
     private void OnDisable()
     {
-        _cubePool.CubeTaken -= Spawn;
+        _cubePool.Puted -= Spawn;
     }
 
     private void Spawn(Cube cube)
@@ -22,7 +21,9 @@ public class BombsSpawner : MonoBehaviour
         Bomb bomb = _bombPool.GetBomb();
         bomb.SetAlphaTime(cube.Timer.GetLifeTime);
         bomb.transform.position = cube.transform.position;
-        bomb.transform.parent = _bombsParent;
+        bomb.transform.parent = _parent;
         bomb.gameObject.SetActive(true);
+
+        IncreaseSpawnedObject();
     }
 }

@@ -1,13 +1,15 @@
-
 using System;
 using UnityEngine;
 
-public class Spawner : MonoBehaviour
+public abstract class Spawner : MonoBehaviour
 {
-    [SerializeField] private Transform _objectParent;
+    public int SpawnedObjectsCount { get; private set; }
 
-    public event Action ObjectSpawned;
+    public event Action Spawned;
 
-    protected void Spawn() { }
-
+    protected void IncreaseSpawnedObject()
+    {
+        SpawnedObjectsCount++;
+        Spawned?.Invoke();
+    }
 }

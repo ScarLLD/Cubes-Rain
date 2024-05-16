@@ -1,11 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-public class CubesSpawner : MonoBehaviour
+public class CubesSpawner : Spawner
 {
     [SerializeField] private CubePool _cubePool;
-    [SerializeField] private Transform _cubesParent;
     [SerializeField] private PositionRandomizer _positionRandomizer;
+    [SerializeField] private Transform _parent;
     [SerializeField] private int _time;
 
     private WaitForSeconds _wait;
@@ -26,7 +26,9 @@ public class CubesSpawner : MonoBehaviour
             Cube cube = _cubePool.GetCube();
             cube.gameObject.SetActive(true);
             cube.transform.position = _positionRandomizer.GetPosition();
-            cube.transform.parent = _cubesParent;
+            cube.transform.parent = _parent;
+
+            IncreaseSpawnedObject();
 
             yield return _wait;
         }
